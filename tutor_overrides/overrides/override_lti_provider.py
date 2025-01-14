@@ -41,12 +41,9 @@ def authenticate_lti_user(prev_fn, request, lti_user_id, lti_consumer):
             lti_user = create_lti_user(lti_user_id, lti_consumer, lis_email)
         else:
             lti_user = create_lti_user(lti_user_id, lti_consumer)
+    # authenticate the user
+    switch_user(request, lti_user, lti_consumer)
 
-    if not (request.user.is_authenticated and
-            request.user == lti_user.edx_user):
-        # The user is not authenticated, or is logged in as somebody else.
-        # Switch them to the LTI user
-        switch_user(request, lti_user, lti_consumer)
 
 
 def create_lti_user(lti_user_id, lti_consumer, email=None):
