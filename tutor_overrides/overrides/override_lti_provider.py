@@ -40,7 +40,7 @@ def authenticate_lti_user(prev_fn, request, lti_user_id, lti_consumer):
         if lti_consumer.require_user_account:
             lti_user = create_lti_user(lti_user_id, lti_consumer, lis_email)
         else:
-            lti_user = create_lti_user(lti_user_id, lti_consumer)
+            lti_user = create_lti_user(lti_user_id, lti_consumer, lis_email)
     # authenticate the user
     switch_user(request, lti_user, lti_consumer)
 
@@ -58,8 +58,8 @@ def create_lti_user(lti_user_id, lti_consumer, email=None):
         edx_password = str(uuid.uuid4())
         while not created:
             try:
-                edx_user_id = generate_random_edx_username()
-                edx_email = f"{edx_user_id}@{settings.LTI_USER_EMAIL_DOMAIN}"
+                edx_user_id = email.split('@')[0] + ''.join(random.choices(string.digits, k=3))
+                edx_email = email
                 with transaction.atomic():
                     edx_user = User.objects.create_user(
                         username=edx_user_id,
