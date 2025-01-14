@@ -19,7 +19,7 @@ from lms.djangoapps.lti_provider.models import LtiUser
 from openedx.core.djangoapps.safe_sessions.middleware import mark_user_change_as_expected
 
 
-def authenticate_lti_user(request, lti_user_id, lti_consumer):
+def authenticate_lti_user(prev_fn, request, lti_user_id, lti_consumer):
     """
     Determine whether the user specified by the LTI launch has an existing
     account. If not, create a new Django User model and associate it with an
